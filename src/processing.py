@@ -14,8 +14,8 @@ def filter_by_state(in_list_operations: list[dict[str, Any]], concept_state: str
     # стоит проверить варианты написания функции ниже на использование ресурсов
     # и выбрать на будущее более подходящий
 
-    # filtered_list = list(filter(lambda x: x.get("state") == concept_state, in_list_operations))
-    filtered_list = [item for item in in_list_operations if item.get("state") == concept_state]
+    filtered_list = list(filter(lambda x: x.get("state") == concept_state, in_list_operations))
+    # filtered_list = [item for item in in_list_operations if item.get("state") == concept_state]
     return filtered_list
 
 
@@ -37,8 +37,13 @@ in_listtest=[
     , {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'}
     , {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'}
     , {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}
+    , {'id': 414288292, 'state': 'EXECUTED', 'date': '2026-07-03T18:35:29.512364'}
+    , {'id': 9397195702, 'state': 'EXECUTED', 'date': '2027-06-30T02:08:58.425572'}
+    , {'id': 5942267272, 'state': 'CANCELED', 'date': '2020-09-12T21:27:25.241689'}
+    , {'id': 6150645912, 'state': 'CANCELED', 'date': '2021-10-14T08:21:33.419441'}
 ]
 
 print(filter_by_state(in_listtest))
+print(filter_by_state(in_listtest),"CANCELED")
 print(sort_by_date(in_listtest))
-
+print(sort_by_date(in_listtest), False)
