@@ -53,7 +53,6 @@ def is_valid_iso_date(item: dict[str, Any]) -> bool:
 
     # Ниже шаблоны для быстрого теста
 
-
 # in_listtest=[
 #     {'id': 41428829, 'date': '2019-07-03T18:35:29.512364'} # нет ключа state
 #     , {'id': 939719570, 'state': 'EXECUTED'}  # нет ключа date
