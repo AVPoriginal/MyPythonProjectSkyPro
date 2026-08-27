@@ -1,4 +1,5 @@
 import pytest
+
 from src.masks import get_mask_account, get_mask_card_number
 
 # Перенес в conftest.py
@@ -27,11 +28,12 @@ from src.masks import get_mask_account, get_mask_card_number
 
 # Тест автоматически запустится по разу для каждого кортежа из test_data...
 
+
 def test_get_mask_card_number(case_data_card_number):
-  in_card, expected = case_data_card_number
-  assert get_mask_card_number(in_card) == expected
+    in_card, expected = case_data_card_number
+    assert get_mask_card_number(in_card) == expected
 
 
 def test_get_mask_account(case_data_account):
-  in_account, expected = case_data_account
-  assert get_mask_account(in_account) == expected
+    in_account, expected = case_data_account
+    assert get_mask_account(in_account) == expected
