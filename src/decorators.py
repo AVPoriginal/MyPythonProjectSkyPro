@@ -1,10 +1,10 @@
-
 ############################
 # module for homework 11.2 #
 ############################
 import time
 import functools
 import sys
+
 
 def log(filename=None):
     """Декоратор для логирования времени выполнения, имени, результата или ошибки."""
@@ -14,7 +14,7 @@ def log(filename=None):
         def wrapper(*args, **kwargs):
             # если filename есть открываем файл
             # если filename пустой/None используем консоль
-            out_target = open(filename, 'a', encoding='UTF-8') if filename else sys.stdout
+            out_target = open(filename, "a", encoding="UTF-8") if filename else sys.stdout
             # имя функции из метаданных для логирования
             func_name = func.__name__
             # время старта выполнения функции для логирования
@@ -43,7 +43,8 @@ def log(filename=None):
                     f"ОШИБКА в {func_name} | "
                     f"Тип ошибки: {type(e).__name__} ({e}) | "
                     f"Входные параметры: {inputs} | "
-                    f"Время до сбоя: {execution_time:.4f} сек\n"
+                    # f"Время до сбоя: {execution_time:.4f} сек\n"
+                    f"Время до сбоя: {execution_time} сек\n"
                 )
                 # запись в лог и передаем ошибку если ошибка
                 print(log_msg, file=out_target)
@@ -59,5 +60,3 @@ def log(filename=None):
         return wrapper
 
     return decorator
-
-

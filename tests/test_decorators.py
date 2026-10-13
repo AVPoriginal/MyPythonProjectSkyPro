@@ -1,4 +1,3 @@
-
 import pytest
 
 from src.decorators import log
@@ -30,6 +29,7 @@ def test_log_to_console_error(capsys):
     @log(filename=None)
     def function_bad(a):
         return a / 0
+
     # проверяем что декоратор пробрасывает ошибку дальше
     with pytest.raises(ZeroDivisionError):
         function_bad(4)
