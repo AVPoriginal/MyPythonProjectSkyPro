@@ -35,6 +35,3 @@ def get_mask_account(in_account: str) -> str:
     else:
         out_account_mask = "данные не верны!"
     return out_account_mask
-
-
-
