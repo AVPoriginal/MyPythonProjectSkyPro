@@ -6,7 +6,7 @@ from src.external_api import get_amount_in_rub
 
 
 #####
-#1
+# 1
 
 def test_get_amount_in_rub_currency_rub():
     """тест транзакции в рублях - без запроса к API"""
@@ -26,7 +26,7 @@ def test_get_amount_in_rub_currency_rub():
 
 
 #####
-#2
+# 2
 
 def test_get_amount_in_rub_currency_usd():
     """ тест транзакции в USD с подменой успешного ответа API """
@@ -61,7 +61,7 @@ def test_get_amount_in_rub_currency_usd():
 
 
 #####
-#3
+# 3
 
 def test_get_amount_in_rub_api_server_error():
     """ тест когда API возвращает HTTP-ошибку """
@@ -82,7 +82,7 @@ def test_get_amount_in_rub_api_server_error():
 
 
 #####
-#4
+# 4
 
 def test_get_amount_in_rub_api_success_false():
     """ тест когда API ответил со статусом 200 но в json пришло success: False """
@@ -107,7 +107,7 @@ def test_get_amount_in_rub_api_success_false():
 
 
 #####
-#5
+# 5
 
 def test_get_amount_in_rub_network_timeout():
     """ тест сбоя соединения """

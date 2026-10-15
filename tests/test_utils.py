@@ -5,7 +5,7 @@ from src.utils import get_transactions
 
 
 #####
-#1
+# 1
 
 def test_get_transactions_success(tmp_path):
     """ тест чтения корректного json файла """
@@ -21,7 +21,7 @@ def test_get_transactions_success(tmp_path):
 
 
 #####
-#2
+# 2
 
 def test_get_transactions_file_not_found():
     """ тест когда файл не существует """
@@ -33,7 +33,7 @@ def test_get_transactions_file_not_found():
 
 
 #####
-#3
+# 3
 
 def test_get_transactions_empty_file(tmp_path):
     """ тест с пустым файлом """
@@ -46,7 +46,7 @@ def test_get_transactions_empty_file(tmp_path):
 
 
 #####
-#4
+# 4
 
 def test_get_transactions_not_a_list(tmp_path):
     """ тест когда в .json не список """
@@ -60,7 +60,7 @@ def test_get_transactions_not_a_list(tmp_path):
 
 
 #####
-#5
+# 5
 
 def test_get_transactions_list_with_invalid_items(tmp_path):
     """ тест когда в json список но элементы не словари """
@@ -74,7 +74,7 @@ def test_get_transactions_list_with_invalid_items(tmp_path):
 
 
 #####
-#7
+# 7
 
 def test_get_transactions_corrupted_json(tmp_path):
     """ тест битого json """

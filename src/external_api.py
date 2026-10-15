@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 # загрузка переменных из .env файла
 load_dotenv()
 
-EXCHANGERATES_API_KEY = os.getenv('EXCHANGERATES_API_KEY')
+EXCHANGERATES_API_KEY = os.getenv("EXCHANGERATES_API_KEY")
 
 
 def get_amount_in_rub(transaction: dict[str, Any]) -> float:
@@ -32,14 +32,8 @@ def get_amount_in_rub(transaction: dict[str, Any]) -> float:
     # 3. Если валюта USD, EUR или любая другая, делаем запрос к API
     url = "https://api.apilayer.com/exchangerates_data/convert"
 
-    headers = {
-        "apikey": EXCHANGERATES_API_KEY
-    }
-    params = {
-        "from": currency_code,
-        "to": "RUB",
-        "amount": amount
-    }
+    headers = {"apikey": EXCHANGERATES_API_KEY}
+    params = {"from": currency_code, "to": "RUB", "amount": amount}
 
     try:
         # Делаем запрос к эндпоинту конвертации
@@ -58,19 +52,32 @@ def get_amount_in_rub(transaction: dict[str, Any]) -> float:
         # Обработка сетевых ошибок (тайм-ауты, проблемы с соединением)
         raise RuntimeError(f"Не удалось подключиться к API конвертации валют: {e}")
 
+
 # выполнится только при прямом запуске файла
-if __name__ == '__main__':
+if __name__ == "__main__":
     print("Проверка функции: if __name__ == '__main__':")
-    tx_rub = {'id': 441945886, 'state': 'EXECUTED', 'date': '2019-08-26T10:50:58.294041', 'operationAmount': {'amount': '31957.58', 'currency': {'name': 'руб.', 'code': 'RUB'}}, 'description': 'Перевод организации', 'from': 'Maestro 1596837868705199', 'to': 'Счет 64686473678894779589'}
+    tx_rub = {
+        "id": 441945886,
+        "state": "EXECUTED",
+        "date": "2019-08-26T10:50:58.294041",
+        "operationAmount": {"amount": "31957.58", "currency": {"name": "руб.", "code": "RUB"}},
+        "description": "Перевод организации",
+        "from": "Maestro 1596837868705199",
+        "to": "Счет 64686473678894779589",
+    }
     print(f"Сумма указана в рублях: {get_amount_in_rub(tx_rub)}")
 
-    tx_usd = {'id': 142264268, 'state': 'EXECUTED', 'date': '2019-04-04T23:20:05.206878', 'operationAmount': {'amount': '79114.93', 'currency': {'name': 'USD', 'code': 'USD'}}, 'description': 'Перевод со счета на счет', 'from': 'Счет 19708645243227258542', 'to': 'Счет 75651667383060284188'}
+    tx_usd = {
+        "id": 142264268,
+        "state": "EXECUTED",
+        "date": "2019-04-04T23:20:05.206878",
+        "operationAmount": {"amount": "79114.93", "currency": {"name": "USD", "code": "USD"}},
+        "description": "Перевод со счета на счет",
+        "from": "Счет 19708645243227258542",
+        "to": "Счет 75651667383060284188",
+    }
     try:
         amount_in_rub = get_amount_in_rub(tx_usd)
         print(f"Сумма в рублях: {amount_in_rub} ")
     except RuntimeError as err:
         print(f"Произошла ошибка: {err}")
-
-
-
-
