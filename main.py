@@ -1,4 +1,3 @@
-
 import logging
 import os
 import pytest
@@ -16,7 +15,7 @@ def setup_logging():
     os.makedirs(log_dir, exist_ok=True)
 
     # очистка файла перед стартом приложения
-    with open(log_file, 'w', encoding='utf-8') as f:
+    with open(log_file, "w", encoding="utf-8") as f:
         f.truncate(0)
 
     # настройки логирования для модуля masks
@@ -24,8 +23,10 @@ def setup_logging():
     logger_masks.setLevel(logging.DEBUG)
     logger_masks.propagate = False
 
-    handler_masks = logging.FileHandler(log_file, mode='a', encoding='utf-8')
-    handler_masks.setFormatter(logging.Formatter('[модуль masks] %(asctime)s - %(levelname)s - %(funcName)s - %(message)s'))
+    handler_masks = logging.FileHandler(log_file, mode="a", encoding="utf-8")
+    handler_masks.setFormatter(
+        logging.Formatter("[модуль masks] %(asctime)s - %(levelname)s - %(funcName)s - %(message)s")
+    )
     logger_masks.addHandler(handler_masks)
 
     # настройки логирования для модуля utils
@@ -33,9 +34,12 @@ def setup_logging():
     logger_utils.setLevel(logging.DEBUG)
     logger_utils.propagate = False
 
-    handler_utils = logging.FileHandler(log_file, mode='a', encoding='utf-8')
+    handler_utils = logging.FileHandler(log_file, mode="a", encoding="utf-8")
     handler_utils.setFormatter(
-        logging.Formatter('[модуль utils] [функция: %(funcName)s] %(asctime)s | %(levelname)s | %(message)s', datefmt='%H:%M:%S'))
+        logging.Formatter(
+            "[модуль utils] [функция: %(funcName)s] %(asctime)s | %(levelname)s | %(message)s", datefmt="%H:%M:%S"
+        )
+    )
     logger_utils.addHandler(handler_utils)
 
 
