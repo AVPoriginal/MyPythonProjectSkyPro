@@ -1,9 +1,9 @@
 ############################
 # module for homework 11.2 #
 ############################
-import time
 import functools
 import sys
+import time
 
 
 def log(filename=None):

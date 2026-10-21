@@ -1,8 +1,8 @@
 
 import json
 from pathlib import Path
-from src.utils import get_transactions
 
+from src.utils import get_transactions
 
 #####
 # 1
