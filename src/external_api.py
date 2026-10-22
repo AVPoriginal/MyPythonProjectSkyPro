@@ -3,8 +3,9 @@
 #########################################
 
 import os
-import requests
 from typing import Any
+
+import requests
 from dotenv import load_dotenv
 
 # загрузка переменных из .env файла

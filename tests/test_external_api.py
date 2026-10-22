@@ -1,12 +1,14 @@
 
+from unittest.mock import Mock, patch
+
 import pytest
 import requests
-from unittest.mock import Mock, patch
-from src.external_api import get_amount_in_rub
 
+from src.external_api import get_amount_in_rub
 
 #####
 # 1
+
 
 def test_get_amount_in_rub_currency_rub():
     """тест транзакции в рублях - без запроса к API"""

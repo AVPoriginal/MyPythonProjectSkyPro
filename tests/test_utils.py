@@ -1,11 +1,12 @@
 
 import json
 from pathlib import Path
-from src.utils import get_transactions
 
+from src.utils import get_transactions
 
 #####
 # 1
+
 
 def test_get_transactions_success(tmp_path):
     """ тест чтения корректного json файла """
