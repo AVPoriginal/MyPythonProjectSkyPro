@@ -1,8 +1,9 @@
-
+import zipfile
 from pathlib import Path
 from unittest.mock import patch
-import zipfile
+
 import pandas as pd
+
 from src.parse_transactions import parse_csv_with_pandas, parse_xlsx_with_pandas
 
 ############################################################################
@@ -10,6 +11,7 @@ from src.parse_transactions import parse_csv_with_pandas, parse_xlsx_with_pandas
 
 #####
 # 1с
+
 
 def test_parse_csv_file_not_found():
     """тест когда файл не существует"""
@@ -19,10 +21,12 @@ def test_parse_csv_file_not_found():
     with patch.object(Path, "is_file", return_value=False):
         result = parse_csv_with_pandas(fake_path)
     # проверка что вернулася строка 'file not found'
-    assert result == 'file not found'
+    assert result == "file not found"
+
 
 #####
 # 2с
+
 
 def test_parse_csv_with_valid_data():
     """тест успешного парсинга корректных данных"""
@@ -41,9 +45,7 @@ def test_parse_csv_with_valid_data():
     }
     mock_df = pd.DataFrame(mock_data)
     # патчим Path.is_file -возвращаем True и pd.read_csv -возвращаем наш DataFrame
-    with patch.object(Path, "is_file", return_value=True), patch(
-        "pandas.read_csv", return_value=mock_df
-    ) as mock_read:
+    with patch.object(Path, "is_file", return_value=True), patch("pandas.read_csv", return_value=mock_df) as mock_read:
         result = parse_csv_with_pandas(fake_path)
         # проверка что pandas вызывался с правильными аргументами один раз
         mock_read.assert_called_once_with(Path(fake_path), sep=";")
@@ -54,15 +56,17 @@ def test_parse_csv_with_valid_data():
     assert result[0]["operationAmount"]["currency"]["code"] == "RUB"
     assert result[0]["from"] == "Visa 1234"
 
+
 #####
 # 3с
+
 
 def test_parse_csv_with_nan_and_missing_values():
     """тест замены NaN и отсутствующих значений на None"""
     fake_path = "nan_transactions.csv"
     # данные где часть полей содержит None/NaN
     mock_data = {
-        "id":[None],
+        "id": [None],
         "state": [None],
         "date": [None],
         "amount": [None],
@@ -73,9 +77,7 @@ def test_parse_csv_with_nan_and_missing_values():
         "to": [None],
     }
     mock_df = pd.DataFrame(mock_data)
-    with patch.object(Path, "is_file", return_value=True), patch(
-        "pandas.read_csv", return_value=mock_df
-    ):
+    with patch.object(Path, "is_file", return_value=True), patch("pandas.read_csv", return_value=mock_df):
         result = parse_csv_with_pandas(fake_path)
     assert len(result) == 1
     item = result[0]
@@ -86,15 +88,18 @@ def test_parse_csv_with_nan_and_missing_values():
     assert item["operationAmount"]["currency"]["name"] is None
     assert item["from"] is None
 
+
 ####
 # 4с
-###############################################################################################
+
+
 def test_parse_csv_corrupted_structure():
     """тест когда csv-файл поврежден (ошибка парсинга pandas)"""
     fake_path = "corrupted.csv"
     # Патчим is_file (файл есть), но read_csv вызывает ParserError
-    with patch.object(Path, "is_file", return_value=True), patch(
-        "pandas.read_csv", side_effect=Exception("Corrupted Excel structure")
+    with (
+        patch.object(Path, "is_file", return_value=True),
+        patch("pandas.read_csv", side_effect=pd.errors.ParserError("Error tokenizing data. C error: ...")),
     ):
         result = parse_csv_with_pandas(fake_path)
     assert result == "error csv format"
@@ -103,15 +108,18 @@ def test_parse_csv_corrupted_structure():
 ####
 # 5с
 
+
 def test_parse_csv_empty_file():
     """тест когда файл существует но он абсолютно пустой"""
     fake_path = "empty.csv"
     # read_csv выбрасывает EmptyDataError, если в файле нет данных/заголовков
-    with patch.object(Path, "is_file", return_value=True), patch(
-        "pandas.read_csv", side_effect=pd.errors.EmptyDataError("No columns to parse from file")
+    with (
+        patch.object(Path, "is_file", return_value=True),
+        patch("pandas.read_csv", side_effect=pd.errors.EmptyDataError("No columns to parse from file")),
     ):
         result = parse_csv_with_pandas(fake_path)
     assert result == "file is empty"
+
 
 ####
 # 6с
@@ -127,9 +135,7 @@ def test_parse_csv_missing_required_columns():
         # колонка 'id' отсутствует
     }
     wrong_df = pd.DataFrame(wrong_mock_data)
-    with patch.object(Path, "is_file", return_value=True), patch(
-        "pandas.read_csv", return_value=wrong_df
-    ):
+    with patch.object(Path, "is_file", return_value=True), patch("pandas.read_csv", return_value=wrong_df):
         result = parse_csv_with_pandas(fake_path)
     assert result == "error csv data format"
 
@@ -140,6 +146,7 @@ def test_parse_csv_missing_required_columns():
 #####
 # 1x
 
+
 def test_parse_xlsx_file_not_found():
     """тест когда файл не существует"""
     #  передаваемый путь к файлу
@@ -148,10 +155,12 @@ def test_parse_xlsx_file_not_found():
     with patch.object(Path, "is_file", return_value=False):
         result = parse_xlsx_with_pandas(fake_path)
     # проверка что вернулся пустой список
-    assert result == 'file not found'
+    assert result == "file not found"
+
 
 #####
 # 2x
+
 
 def test_parse_xlsx_with_valid_data():
     """тест успешного парсинга корректных данных"""
@@ -170,9 +179,10 @@ def test_parse_xlsx_with_valid_data():
     }
     mock_df = pd.DataFrame(mock_data)
     # Патчим Path.is_file -возвращаем True и pd.read_excel возвращаем наш DataFrame
-    with patch.object(Path, "is_file", return_value=True), patch(
-        "pandas.read_excel", return_value=mock_df
-    ) as mock_read:
+    with (
+        patch.object(Path, "is_file", return_value=True),
+        patch("pandas.read_excel", return_value=mock_df) as mock_read,
+    ):
         result = parse_xlsx_with_pandas(fake_path)
         # проверяем что pandas вызывался с правильными аргументами один раз
         mock_read.assert_called_once_with(Path(fake_path))
@@ -183,6 +193,7 @@ def test_parse_xlsx_with_valid_data():
     assert result[0]["operationAmount"]["currency"]["code"] == "RUB"
     assert result[0]["from"] == "Visa 1234"
 
+
 #####
 # 3x
 
@@ -192,7 +203,7 @@ def test_parse_xlsx_with_nan_and_missing_values():
     fake_path = "nan_transactions.xlsx"
     # данные где часть полей содержит None/NaN
     mock_data = {
-        "id":[None],
+        "id": [None],
         "state": [None],
         "date": [None],
         "amount": [None],
@@ -203,9 +214,7 @@ def test_parse_xlsx_with_nan_and_missing_values():
         "to": [None],
     }
     mock_df = pd.DataFrame(mock_data)
-    with patch.object(Path, "is_file", return_value=True), patch(
-        "pandas.read_excel", return_value=mock_df
-    ):
+    with patch.object(Path, "is_file", return_value=True), patch("pandas.read_excel", return_value=mock_df):
         result = parse_xlsx_with_pandas(fake_path)
     assert len(result) == 1
     item = result[0]
@@ -216,15 +225,18 @@ def test_parse_xlsx_with_nan_and_missing_values():
     assert item["operationAmount"]["currency"]["name"] is None
     assert item["from"] is None
 
+
 #####
 # 4x
+
 
 def test_parse_xlsx_corrupted_structure():
     """тест когда excel-файл поврежден (ошибка парсинга pandas)"""
     fake_path = "corrupted.xlsx"
     # патчим is_file -файл есть но read_excel вызывает BadZipFile
-    with patch.object(Path, "is_file", return_value=True), patch(
-        "pandas.read_excel", side_effect=zipfile.BadZipFile("File is not a zip file")
+    with (
+        patch.object(Path, "is_file", return_value=True),
+        patch("pandas.read_excel", side_effect=zipfile.BadZipFile("File is not a zip file")),
     ):
         result = parse_xlsx_with_pandas(fake_path)
     assert result == "error excel format"
@@ -238,14 +250,17 @@ def test_parse_xlsx_empty_file():
     """тест когда файл существует но он абсолютно пустой"""
     fake_path = "empty.xlsx"
     # read_csv выбрасывает EmptyDataError если в файле нет данных/заголовков
-    with patch.object(Path, "is_file", return_value=True), patch(
-        "pandas.read_excel", side_effect=pd.errors.EmptyDataError("No columns to parse from file")
+    with (
+        patch.object(Path, "is_file", return_value=True),
+        patch("pandas.read_excel", side_effect=pd.errors.EmptyDataError("No columns to parse from file")),
     ):
         result = parse_xlsx_with_pandas(fake_path)
     assert result == "file is empty"
 
+
 #####
 # 6x
+
 
 def test_parse_xlsx_missing_required_columns():
     """тест когда EXCEL валидный но в нем нет нужных колонок (например, 'id')."""
@@ -257,8 +272,6 @@ def test_parse_xlsx_missing_required_columns():
         # колонка 'id' отсутствует
     }
     wrong_df = pd.DataFrame(wrong_mock_data)
-    with patch.object(Path, "is_file", return_value=True), patch(
-        "pandas.read_excel", return_value=wrong_df
-    ):
+    with patch.object(Path, "is_file", return_value=True), patch("pandas.read_excel", return_value=wrong_df):
         result = parse_xlsx_with_pandas(fake_path)
     assert result == "error excel data format"
