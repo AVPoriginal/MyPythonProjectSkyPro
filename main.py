@@ -69,7 +69,6 @@ def format_transactions(transactions: list[dict]):
         # маскировка вывода счетов и карт
         # проверка если в поле данных попадается None или NaN
         source = tr.get("from", "")
-###########        print(f"{source} -> отладка")
         destination = tr.get("to", "")
         if source is None or source != source :
             source = ""
@@ -114,25 +113,24 @@ while True:
         print("\nвыход из программы")
         sys.exit()  # прерывает выполнение программы
     else:
-        print("\nПрограмма: Некорректный выбор. Пожалуйста, попробуйте еще раз.")
+        print("\n Некорректный выбор. Пожалуйста, попробуйте еще раз.")
 
-####### print(load_transactions)
 
 while True:
     print("\nВведите статус, по которому необходимо выполнить фильтрацию.\n"
           "Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING")
     print("Чтобы выйти из программы введите exit")
-    user_input = input("\nПользователь: ")
+    user_input = input("\nВведите: ")
     if user_input.upper() == "EXECUTED":
-        print("\nПрограмма:  Операции отфильтрованы по статусу EXECUTED ")
+        print("\n Операции отфильтрованы по статусу EXECUTED ")
         output_transactions = filter_by_state(load_transactions)
         break  # выход из цикла
     elif user_input.upper() == "CANCELED":
-        print("\nПрограмма: Операции отфильтрованы по статусу CANCELED ")
+        print("\n Операции отфильтрованы по статусу CANCELED ")
         output_transactions = filter_by_state(load_transactions, user_input.upper())
         break  # выход из цикла
     elif user_input.upper() == "PENDING":
-        print("\nПрограмма:  Операции отфильтрованы по статусу PENDING ")
+        print("\n Операции отфильтрованы по статусу PENDING ")
         output_transactions = filter_by_state(load_transactions, user_input.upper())
         break  # выход из цикла
     elif user_input.lower().strip() == "exit":
@@ -142,12 +140,11 @@ while True:
         print(f"\n: Некорректный выбор. Статус операции {user_input} недоступен. \n "
                                                              "Пожалуйста, попробуйте еще раз.")
 
-##################print (output_transactions)
 
 while True:
-    print("\nОтсортировать операции по дате? Да(Yes)/Нет()")
+    print("\nОтсортировать операции по дате? Да(Yes)/Нет(No)")
     print("Чтобы выйти из программы введите exit или выход")
-    user_input = input("\nПользователь: ")
+    user_input = input("\nВведите: ")
     if user_input.upper().strip() in ["ДА", "YES"]:
         while True:
             print("\nОтсортировать по возрастанию или по убыванию?")
@@ -179,10 +176,9 @@ while True:
         print("\n: Некорректный выбор. Выберите сортировку даты или выход из программы \n "
                       "Пожалуйста, попробуйте еще раз.")
 
-##############print(output_transactions)
 
 while True:
-    print("\nВыводить только рублевые транзакции? Да(Yes)/Нет()")
+    print("\nВыводить только рублевые транзакции? Да(Yes)/Нет(No)")
     print("Чтобы выйти из программы введите exit или выход")
     user_input = input("\n Введите : ")
     if user_input.upper().strip() in ["ДА", "YES"]:
@@ -199,9 +195,6 @@ while True:
         print("\n: Некорректный выбор. Выберите все или только в рублях или выход из программы \n "
                       "Пожалуйста, попробуйте еще раз.")
 
-
-###########print(output_transactions)
-##print("после филтра руб")
 
 while True:
     print("\nОтфильтровать список транзакций по определенному слову/строке"
@@ -229,10 +222,8 @@ if len(output_transactions) == 0:
 else:
     print("\nРаспечатываю итоговый список транзакций...")
     print(f"\nВсего банковских операций в выборке: {len(output_transactions)}")
-    #print(output_transactions)
     format_transactions(output_transactions)
 
-##############print("пока конец")
 
 # ниже было использовано для задания 12.2 на данный момент не требуется
 #
