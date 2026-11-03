@@ -27,4 +27,3 @@ def process_bank_operations(data: list[dict], categories: list) -> dict:
     counts = Counter(tr.get("description") for tr in data)
     # итоговый словарь в порядке переданных категорий
     return {cat: counts[cat] for cat in categories}
-

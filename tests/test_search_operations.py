@@ -1,6 +1,7 @@
 
 import pytest
-from src.search_operations import process_bank_search, process_bank_operations
+
+from src.search_operations import process_bank_operations, process_bank_search
 
 
 # фикстура с тестовыми данными
@@ -18,6 +19,7 @@ def sample_data():
     ]
 
 # тесты к process_bank_search
+
 
 def test_search_successful_match(sample_data):
     """ тест на обычный успешный поиск подстроки """
@@ -84,6 +86,7 @@ def test_successful_counting(sample_data):
     result = process_bank_operations(sample_data, categories)
     assert result == expected
 
+
 def test_categories_order(sample_data):
     """тест на возврат ключей в словаре в том порядке в каком переданы категории"""
     categories = ["Пополнение счета", "Перевод с карты на карту"]
@@ -105,6 +108,7 @@ def test_empty_inputs():
     assert process_bank_operations([], ["Оплата услуг"]) == {"Оплата услуг": 0}
     # если список категорий пустой то должен вернуться пустой словарь
     assert process_bank_operations([{"description": "Тест"}], []) == {}
+
 
 def test_none_and_missing_description_ignored(sample_data):
     """тест проверяет что элементы с None или отсутствующим ключом не вызывают ошибку"""

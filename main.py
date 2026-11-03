@@ -1,15 +1,16 @@
-
+import logging  # было использовано в задании 12.2
+import os  # было использовано в задании 12.2
 import sys
-import logging # было использовано в задании 12.2
-import os # было использовано в задании 12.2
+
 # import pytest # было использовано в задании 12.2
 from pathlib import Path
-from src.parse_transactions import parse_csv_with_pandas, parse_xlsx_with_pandas
-from src.utils import get_transactions
-from src.processing import filter_by_state, sort_by_date
+
 from src.generators import filter_by_currency
-from src.widget import mask_account_card, get_date
+from src.parse_transactions import parse_csv_with_pandas, parse_xlsx_with_pandas
+from src.processing import filter_by_state, sort_by_date
 from src.search_operations import process_bank_search
+from src.utils import get_transactions
+from src.widget import get_date, mask_account_card
 
 
 def setup_logging():
@@ -51,6 +52,7 @@ def setup_logging():
     )
     logger_utils.addHandler(handler_utils)
 
+
 # настройка логирования
 setup_logging()
 
@@ -62,17 +64,17 @@ path_to_json = BASE_DIR / "data" / "operations.json"
 
 
 def format_transactions(transactions: list[dict]):
-    """ форматирует и выводит список словарей в формате задания 13.2 """
+    """форматирует и выводит список словарей в формате задания 13.2"""
     for tr in transactions:
-        date_str = get_date(tr.get("date")) #привод даты к формату вывода
+        date_str = get_date(tr.get("date"))  # привод даты к формату вывода
         description = tr.get("description", "")
         # маскировка вывода счетов и карт
         # проверка если в поле данных попадается None или NaN
         source = tr.get("from", "")
         destination = tr.get("to", "")
-        if source is None or source != source :
+        if source is None or source != source:
             source = ""
-        if destination is None or destination != destination :
+        if destination is None or destination != destination:
             destination = ""
         else:
             destination = mask_account_card(destination)
@@ -81,9 +83,9 @@ def format_transactions(transactions: list[dict]):
         currency_code = tr_amount.get("currency", {}).get("code", "")
         # вывод в консоль
         print(f"{date_str} {description}")
-        if source == "" :
+        if source == "":
             print(f"{destination}")
-        else :
+        else:
             print(f"{mask_account_card(source)} -> {destination}")
         print(f"Сумма: {amount} {currency_code}")
         print()  # строка для разделения транзакций
@@ -117,8 +119,10 @@ while True:
 
 
 while True:
-    print("\nВведите статус, по которому необходимо выполнить фильтрацию.\n"
-          "Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING")
+    print(
+        "\nВведите статус, по которому необходимо выполнить фильтрацию.\n"
+        "Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING"
+    )
     print("Чтобы выйти из программы введите exit")
     user_input = input("\nВведите: ")
     if user_input.upper() == "EXECUTED":
@@ -137,8 +141,10 @@ while True:
         print("\nвыход из программы")
         sys.exit()  # прерывает выполнение программы
     else:
-        print(f"\n: Некорректный выбор. Статус операции {user_input} недоступен. \n "
-                                                             "Пожалуйста, попробуйте еще раз.")
+        print(
+            f"\n: Некорректный выбор. Статус операции {user_input} недоступен\n"
+            f"Пожалуйста, попробуйте еще раз."
+        )
 
 
 while True:
@@ -162,9 +168,11 @@ while True:
                 print("\n выход из программы")
                 sys.exit()  # прерывает выполнение программы
             else:
-                print("\n: Некорректный выбор. "
-                      "Выберите сортировку даты или выход из программы \n "
-                      "Пожалуйста, попробуйте еще раз.")
+                print(
+                    "\n: Некорректный выбор. "
+                    "Выберите сортировку даты или выход из программы \n "
+                    "Пожалуйста, попробуйте еще раз."
+                )
         break  # выход из цикла
     elif user_input.upper().strip() in ["НЕТ", "NO"]:
         print("\n Операции не соритрованы по дате ")
@@ -173,8 +181,10 @@ while True:
         print("\n выход из программы")
         sys.exit()  # прерывает выполнение программы
     else:
-        print("\n: Некорректный выбор. Выберите сортировку даты или выход из программы \n "
-                      "Пожалуйста, попробуйте еще раз.")
+        print(
+            "\n: Некорректный выбор. Выберите сортировку даты или выход из программы\n "
+            "Пожалуйста, попробуйте еще раз."
+        )
 
 
 while True:
@@ -183,7 +193,7 @@ while True:
     user_input = input("\n Введите : ")
     if user_input.upper().strip() in ["ДА", "YES"]:
         print("\n Операции только в рублях ")
-        output_transactions = list(filter_by_currency(output_transactions,"RUB"))
+        output_transactions = list(filter_by_currency(output_transactions, "RUB"))
         break  # выход из цикла
     elif user_input.upper().strip() in ["НЕТ", "NO"]:
         print("\n Выводятся операции с любой валютой")
@@ -192,13 +202,14 @@ while True:
         print("\nвыход из программы")
         sys.exit()  # прерывает выполнение программы
     else:
-        print("\n: Некорректный выбор. Выберите все или только в рублях или выход из программы \n "
-                      "Пожалуйста, попробуйте еще раз.")
+        print(
+            "\n:Некорректный выбор. Выберите все или только в рублях или выход из программы\n "
+            "Пожалуйста, попробуйте еще раз."
+        )
 
 
 while True:
-    print("\nОтфильтровать список транзакций по определенному слову/строке"
-          " в описании? Да(Yes)/Нет(No)")
+    print("\nОтфильтровать список транзакций по определенному слову/строке" " в описании? Да(Yes)/Нет(No)")
     print("Чтобы выйти из программы введите exit или выход")
     user_input = input("\nПользователь: ")
     if user_input.upper().strip() in ["ДА", "YES"]:
@@ -214,8 +225,10 @@ while True:
         print("\nвыход из программы")
         sys.exit()  # прерывает выполнение программы
     else:
-        print("\n: Некорректный выбор. Выберите все или только в рублях или выход из программы \n "
-                      "Пожалуйста, попробуйте еще раз.")
+        print(
+            "\n:Некорректный выбор. Выберите все или только в рублях или выход из программы\n "
+            "Пожалуйста, попробуйте еще раз."
+        )
 
 if len(output_transactions) == 0:
     print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации")
